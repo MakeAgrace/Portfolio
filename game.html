@@ -3,111 +3,126 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Coffee Barista Game ☕</title>
+<title>MakeAcoffee ☕</title>
 
 <style>
-  body{
-    margin:0;
-    font-family: Arial, sans-serif;
-    background: radial-gradient(circle at top, #2b1b14, #120b08);
-    color:white;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    height:100vh;
-  }
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:radial-gradient(circle at top,#2b1b14,#120b08);
+  color:white;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:100vh;
+  padding:20px;
+  box-sizing:border-box;
+}
 
-  .game{
-    width:520px;
-    background:rgba(255,255,255,0.05);
-    border:1px solid rgba(255,255,255,0.1);
-    border-radius:16px;
-    padding:20px;
-    backdrop-filter: blur(10px);
-  }
+.game{
+  width:100%;
+  max-width:520px;
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:16px;
+  padding:20px;
+  backdrop-filter:blur(10px);
+}
 
-  h1{
-    text-align:center;
-    margin-bottom:10px;
-  }
+h1{
+  text-align:center;
+  margin-bottom:10px;
+}
 
+.stats{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:15px;
+  font-size:14px;
+}
+
+.layout{
+  display:flex;
+  gap:15px;
+}
+
+.main{
+  flex:2;
+}
+
+.recipes{
+  flex:1;
+  background:rgba(255,255,255,0.04);
+  border-radius:12px;
+  padding:10px;
+  font-size:12px;
+}
+
+.recipe{
+  background:rgba(255,255,255,0.05);
+  padding:8px;
+  border-radius:8px;
+  margin-bottom:10px;
+}
+
+.customer{
+  background:rgba(255,255,255,0.06);
+  padding:12px;
+  border-radius:12px;
+  margin-bottom:10px;
+  border-left:4px solid #c96a2b;
+}
+
+.customer.angry{
+  border-left-color:red;
+}
+
+.customer.vip{
+  border-left-color:gold;
+}
+
+.ingredients{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:10px;
+}
+
+button{
+  flex:1;
+  min-width:48%;
+  padding:10px;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  background:#c96a2b;
+  color:white;
+  font-size:12px;
+  transition:.2s;
+}
+
+button:hover{
+  background:#a8551f;
+}
+
+.serve{
+  width:100%;
+  margin-top:10px;
+  background:#8b5e3c;
+}
+
+.log{
+  text-align:center;
+  margin-top:10px;
+  min-height:20px;
+  font-size:13px;
+}
+
+@media(max-width:700px){
   .layout{
-    display:flex;
-    gap:15px;
+    flex-direction:column;
   }
-
-  .main{
-    flex:2;
-  }
-
-  .recipes{
-    flex:1;
-    background:rgba(255,255,255,0.04);
-    border:1px solid rgba(255,255,255,0.1);
-    border-radius:12px;
-    padding:10px;
-    font-size:12px;
-  }
-
-  .recipe{
-    margin-bottom:10px;
-    padding:8px;
-    border-radius:8px;
-    background:rgba(255,255,255,0.05);
-  }
-
-  .customer{
-    background:rgba(255,255,255,0.06);
-    padding:12px;
-    border-radius:12px;
-    margin-bottom:10px;
-    border-left:4px solid #c96a2b;
-  }
-
-  .ingredients{
-    display:flex;
-    flex-wrap:wrap;
-    gap:8px;
-    margin-top:10px;
-  }
-
-  button{
-    flex:1;
-    min-width:48%;
-    padding:10px;
-    border:none;
-    border-radius:10px;
-    cursor:pointer;
-    background:#c96a2b;
-    color:white;
-    font-size:12px;
-  }
-
-  button:hover{
-    background:#a8551f;
-  }
-
-  .serve{
-    width:100%;
-    margin-top:10px;
-    background:#8b5e3c;
-  }
-
-  .log{
-    text-align:center;
-    margin-top:10px;
-    font-size:13px;
-    min-height:18px;
-    opacity:0.85;
-  }
-
-  .stats{
-    display:flex;
-    justify-content:space-between;
-    font-size:14px;
-    margin-bottom:10px;
-    opacity:0.9;
-  }
+}
 </style>
 </head>
 
@@ -115,45 +130,67 @@
 
 <div class="game">
 
-  <h1>MakeAcoffee ☕</h1>
+<h1>MakeAcoffee ☕</h1>
 
-  <div class="stats">
-    <div>Score: <span id="score">0</span></div>
-    <div>Time: <span id="time">0</span></div>
-  </div>
+<div class="stats">
+  <div>Score: <span id="score">0</span></div>
+  <div>Time: <span id="time">0</span></div>
+</div>
 
-  <div class="layout">
+<div class="layout">
 
-    <div class="main">
+  <div class="main">
 
-      <div id="customerArea"></div>
+    <div id="customerArea"></div>
 
-      <div class="ingredients" id="ingredients"></div>
+    <div class="ingredients" id="ingredients"></div>
 
-      <button class="serve" onclick="serve()">Serve Drink</button>
+    <button class="serve" onclick="serve()">
+      Serve Drink
+    </button>
 
-      <div class="log" id="log">Build the coffee ☕</div>
-
+    <div class="log" id="log">
+      Build the coffee ☕
     </div>
 
-    <div class="recipes">
-      <h3>📖 Recipe Book</h3>
+  </div>
 
-      <div class="recipe">☕ Latte<br>Espresso + Milk</div>
-      <div class="recipe">☕ Cappuccino<br>Espresso + Milk + Foam</div>
-      <div class="recipe">☕ Caramel Macchiato<br>Espresso + Milk + Foam + Caramel</div>
+  <div class="recipes">
+    <h3>📖 Recipe Book</h3>
 
+    <div class="recipe">
+      ☕ Latte<br>
+      Espresso + Milk
+    </div>
+
+    <div class="recipe">
+      ☕ Cappuccino<br>
+      Espresso + Milk + Foam
+    </div>
+
+    <div class="recipe">
+      ☕ Caramel Macchiato<br>
+      Espresso + Milk + Foam + Caramel
     </div>
 
   </div>
 
 </div>
 
+</div>
+
 <script>
 
-/* ===================== DATA ===================== */
+/* =========================
+   DATA
+========================= */
 
-const ingredientList = ["Espresso", "Milk", "Foam", "Caramel"];
+const ingredientList = [
+  "Espresso",
+  "Milk",
+  "Foam",
+  "Caramel"
+];
 
 const recipes = {
   "Latte": ["Espresso","Milk"],
@@ -161,90 +198,85 @@ const recipes = {
   "Caramel Macchiato": ["Espresso","Milk","Foam","Caramel"]
 };
 
-const names = ["Alex","Shawn","Jerome","Jeffrey","Noah","Emma"];
+const names = [
+  "Alex",
+  "Mia",
+  "Liam",
+  "Sofia",
+  "Noah",
+  "Emma"
+];
 
-/* ===================== STATE ===================== */
+/* =========================
+   GAME STATE
+========================= */
 
 let customer = null;
 let build = [];
 let score = 0;
 let time = 0;
+let currentEvent = null;
 
-/* ===================== GAME LOGIC ===================== */
+/* =========================
+   RANDOM EVENTS
+========================= */
+
+function randomEvent(){
+
+  const roll = Math.random();
+
+  if(roll < 0.25){
+    currentEvent = "rush";
+    log("🔥 Rush Hour!");
+  }
+
+  else if(roll < 0.45){
+    currentEvent = "vip";
+    log("👑 VIP Customer Incoming!");
+  }
+
+  else{
+    currentEvent = null;
+  }
+}
+
+/* =========================
+   CUSTOMER
+========================= */
 
 function spawn(){
+
   const keys = Object.keys(recipes);
+
+  let customerTime = 18;
+  let mood = "";
+
+  if(currentEvent === "rush"){
+    customerTime = 10;
+    mood = "angry";
+  }
 
   customer = {
     name: names[Math.floor(Math.random()*names.length)],
     order: keys[Math.floor(Math.random()*keys.length)],
-    time: 18,
-    avatar: "☕"
+    time: customerTime,
+    mood: mood,
+    vip: currentEvent === "vip"
   };
 
   build = [];
-  updateUI();
-}
-
-function add(item){
-  build.push(item);
-  log("Added: " + item);
-}
-
-function serve(){
-  if(!customer) return;
-
-  const required = recipes[customer.order];
-
-  const correct =
-    required.length === build.length &&
-    required.every(i => build.includes(i));
-
-  if(correct){
-    score += 10;
-    log("✅ Perfect drink!");
-  } else {
-    score -= 5;
-    log("❌ Wrong recipe!");
-  }
-
-  customer = null;
-  build = [];
-
-  shuffleIngredients();
-  setTimeout(spawn, 1000);
 
   updateUI();
 }
 
-/* ===================== UI ===================== */
-
-function updateUI(){
-  const area = document.getElementById("customerArea");
-
-  if(customer){
-    area.innerHTML = `
-      <div class="customer">
-        <b>${customer.name}</b><br>
-        “I want a ${customer.order} ☕”
-      </div>
-    `;
-  } else {
-    area.innerHTML = `<div class="customer">Waiting for customer...</div>`;
-  }
-
-  document.getElementById("score").textContent = score;
-  document.getElementById("time").textContent = time;
-}
-
-function log(msg){
-  document.getElementById("log").textContent = msg;
-}
-
-/* ===================== SHUFFLE ===================== */
+/* =========================
+   INGREDIENTS
+========================= */
 
 function shuffleIngredients(){
-  const container = document.getElementById("ingredients");
+
+  const container =
+    document.getElementById("ingredients");
 
   const shuffled = [...ingredientList]
     .sort(() => Math.random() - 0.5);
@@ -252,41 +284,196 @@ function shuffleIngredients(){
   container.innerHTML = "";
 
   shuffled.forEach(item => {
+
     const btn = document.createElement("button");
+
     btn.textContent = item;
+
     btn.onclick = () => add(item);
+
     container.appendChild(btn);
+
   });
+
 }
 
-/* ===================== TIMER ===================== */
+function add(item){
+
+  build.push(item);
+
+  log("Added: " + item);
+
+}
+
+/* =========================
+   SERVE
+========================= */
+
+function serve(){
+
+  if(!customer) return;
+
+  const required = recipes[customer.order];
+
+  const correct =
+    required.length === build.length &&
+    required.every(item => build.includes(item));
+
+  if(correct){
+
+    let gain = 10;
+
+    if(customer.vip){
+      gain += 10;
+    }
+
+    score += gain;
+
+    log("✅ Perfect Drink! +" + gain);
+
+  } else {
+
+    score -= 5;
+
+    log("❌ Wrong Recipe!");
+
+  }
+
+  customer = null;
+
+  build = [];
+
+  shuffleIngredients();
+
+  setTimeout(() => {
+
+    randomEvent();
+
+    spawn();
+
+  }, 800);
+
+  updateUI();
+
+}
+
+/* =========================
+   UI
+========================= */
+
+function updateUI(){
+
+  const area =
+    document.getElementById("customerArea");
+
+  if(customer){
+
+    let classes = "customer";
+
+    if(customer.mood === "angry"){
+      classes += " angry";
+    }
+
+    if(customer.vip){
+      classes += " vip";
+    }
+
+    area.innerHTML = `
+      <div class="${classes}">
+        <strong>${customer.name}</strong>
+        ${customer.vip ? "👑 VIP" : ""}
+        <br><br>
+
+        Wants:
+        <strong>${customer.order}</strong> ☕
+
+        <br><br>
+
+        ⏱ ${customer.time}s left
+      </div>
+    `;
+
+  } else {
+
+    area.innerHTML = `
+      <div class="customer">
+        Waiting for customer...
+      </div>
+    `;
+
+  }
+
+  document.getElementById("score").textContent =
+    score;
+
+  document.getElementById("time").textContent =
+    time;
+
+}
+
+function log(msg){
+
+  document.getElementById("log").textContent =
+    msg;
+
+}
+
+/* =========================
+   TIMER
+========================= */
 
 function tick(){
+
   time++;
 
   if(customer){
+
     customer.time--;
 
     if(customer.time <= 0){
-      log("⛔ Customer left!");
+
+      log("⛔ Customer Left!");
+
       customer = null;
+
       build = [];
-      setTimeout(spawn, 1000);
+
+      setTimeout(() => {
+
+        randomEvent();
+
+        spawn();
+
+      }, 800);
+
     }
+
   }
 
   updateUI();
+
 }
 
-/* ===================== START GAME ===================== */
+/* =========================
+   START GAME
+========================= */
 
 function startGame(){
+
   shuffleIngredients();
+
+  randomEvent();
+
   spawn();
+
   setInterval(tick, 1000);
+
 }
 
-window.onload = startGame;
+document.addEventListener(
+  "DOMContentLoaded",
+  startGame
+);
 
 </script>
 
