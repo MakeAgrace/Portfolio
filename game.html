@@ -216,20 +216,37 @@ let time = 0;
 function spawn(){
   const keys = Object.keys(recipes);
 
-  const name = names[Math.floor(Math.random()*names.length)];
-
-  const avatars = ["☕","🙂","😄","🧑‍🍳","👩‍🍳"];
-
   customer = {
-    name: name,
+    name: names[Math.floor(Math.random()*names.length)],
     order: keys[Math.floor(Math.random()*keys.length)],
-    time: 18,
-    avatar: avatars[Math.floor(Math.random()*avatars.length)]
+    time: 18
   };
 
   build = [];
   updateUI();
 }
+
+function add(item){
+  build.push(item);
+  log("Added: " + item);
+}
+
+function serve(){
+  if(!customer) return;
+
+  const correct =
+    JSON.stringify(build) === JSON.stringify(recipes[customer.order]);
+
+  if(correct){
+    score += 10;
+    log("✅ Perfect drink!");
+  } else {
+    score -= 5;
+    log("❌ Wrong recipe!");
+  }
+
+  customer = null;
+  build = [];
 
   setTimeout(spawn, 1200);
   updateUI();
