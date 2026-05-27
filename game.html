@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Coffee Barista Game ☕</title>
+
+<style>
+  body{
+    margin:0;
+    font-family: Arial, sans-serif;
+    background: radial-gradient(circle at top, #2b1b14, #120b08);
+    color:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+  }
+
+  .game{
+    width:520px;
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.1);
+    border-radius:16px;
+    padding:20px;
+    backdrop-filter: blur(10px);
+  }
+
+  h1{
+    text-align:center;
+    margin-bottom:10px;
+  }
+
+  .layout{
+    display:flex;
+    gap:15px;
+  }
+
+  .main{
+    flex:2;
+  }
+
+  .recipes{
+    flex:1;
+    background:rgba(255,255,255,0.04);
+    border:1px solid rgba(255,255,255,0.1);
+    border-radius:12px;
+    padding:10px;
+    font-size:12px;
+  }
+
+  .recipes h3{
+    margin:0 0 8px 0;
+    font-size:13px;
+    text-align:center;
+  }
+
+  .recipe{
+    margin-bottom:10px;
+    padding:8px;
+    border-radius:8px;
+    background:rgba(255,255,255,0.05);
+  }
+
+  .customer{
+    background:rgba(255,255,255,0.06);
+    padding:12px;
+    border-radius:12px;
+    margin-bottom:10px;
+    border-left:4px solid #c96a2b;
+  }
+  
+
+  .avatar{
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    background:linear-gradient(135deg,#c96a2b,#8b5e3c);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-weight:bold;
+    margin-bottom:6px;
+  }
+
+  .bubble{
+    font-size:13px;
+    color:#c49a6c;
+  }
+
+  .ingredients{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-top:10px;
+  }
+
+  button{
+    flex:1;
+    min-width:48%;
+    padding:10px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    background:#c96a2b;
+    color:white;
+    font-size:12px;
+    transition:0.2s;
+  }
+
+  button:hover{
+    background:#a8551f;
+  }
+
+  .serve{
+    width:100%;
+    margin-top:10px;
+    background:#8b5e3c;
+  }
+
+  .serve:hover{
+    background:#6f452c;
+  }
+
+  .log{
+    text-align:center;
+    margin-top:10px;
+    font-size:13px;
+    min-height:18px;
+    opacity:0.85;
+  }
+
+  .stats{
+    display:flex;
+    justify-content:space-between;
+    font-size:14px;
+    margin-bottom:10px;
+    opacity:0.9;
+  }
+</style>
+</head>
+
+<body>
+
+<div class="game">
+
+  <h1>MakeAcoffee ☕ </h1>
+
+  <div class="stats">
+    <div>Score: <span id="score">0</span></div>
+    <div>Time: <span id="time">0</span></div>
+  </div>
+
+  <div class="layout">
+
+    <!-- MAIN GAME -->
+    <div class="main">
+
+      <div id="customerArea"></div>
+
+      <div class="ingredients">
+
+        <button onclick="add('Espresso')">Espresso</button>
+        <button onclick="add('Milk')">Milk</button>
+        <button onclick="add('Foam')">Foam</button>
+        <button onclick="add('Caramel')">Caramel</button>
+
+      </div>
+
+      <button class="serve" onclick="serve()">Serve Drink</button>
+
+      <div class="log" id="log">Build the coffee ☕</div>
+
+    </div>
+
+    <!-- RECIPE BOOK -->
+    <div class="recipes">
+      <h3>📖 Recipe Book</h3>
+
+      <div class="recipe">
+        ☕ Latte<br>
+        Espresso + Milk
+      </div>
+
+      <div class="recipe">
+        ☕ Cappuccino<br>
+        Espresso + Milk + Foam
+      </div>
+
+      <div class="recipe">
+        ☕ Caramel Macchiato<br>
+        Espresso + Milk + Foam + Caramel
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+
+const recipes = {
+  "Latte": ["Espresso","Milk"],
+  "Cappuccino": ["Espresso","Milk","Foam"],
+  "Caramel Macchiato": ["Espresso","Milk","Foam","Caramel"]
+};
+
+const names = ["Alex","Mia","Liam","Sofia","Noah","Emma"];
+
+let customer = null;
+let build = [];
+let score = 0;
+let time = 0;
+
+function spawn(){
+  const keys = Object.keys(recipes);
+
+  customer = {
+    name: names[Math.floor(Math.random()*names.length)],
+    order: keys[Math.floor(Math.random()*keys.length)],
+    time: 18
+  };
+
+  build = [];
+  updateUI();
+}
+
+function add(item){
+  build.push(item);
+  log("Added: " + item);
+}
+
+function serve(){
+  if(!customer) return;
+
+  const correct =
+    JSON.stringify(build) === JSON.stringify(recipes[customer.order]);
+
+  if(correct){
+    score += 10;
+    log("✅ Perfect drink!");
+  } else {
+    score -= 5;
+    log("❌ Wrong recipe!");
+  }
+
+  customer = null;
+  build = [];
+
+  setTimeout(spawn, 1200);
+  updateUI();
+}
+
+function updateUI(){
+  const area = document.getElementById("customerArea");
+
+  if(customer){
+    area.innerHTML = `
+  <div class="customer">
+    
+    <div class="customer-left">
+      <div class="avatar-text">👤 ${customer.name}</div>
+      <div class="bubble">“I want a ${customer.order} ☕”</div>
+    </div>
+
+    <div class="customer-right">
+      <div class="avatar-big">${customer.avatar}</div>
+    </div>
+
+  </div>
+`;
+
+  } else {
+    area.innerHTML = `<div class="customer">Waiting for customer...</div>`;
+  }
+
+  document.getElementById("score").textContent = score;
+  document.getElementById("time").textContent = time;
+}
+
+function tick(){
+  time++;
+
+  if(customer){
+    customer.time--;
+
+    if(customer.time <= 0){
+      log("⛔ Customer left!");
+      customer = null;
+      build = [];
+      setTimeout(spawn, 1200);
+    }
+  }
+
+  updateUI();
+}
+
+function log(msg){
+  document.getElementById("log").textContent = msg;
+}
+
+spawn();
+setInterval(tick, 1000);
+
+</script>
+
+</body>
+</html>
